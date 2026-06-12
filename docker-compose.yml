@@ -1,0 +1,22 @@
+services:
+  minio:
+    # 1. Služba (Zdroj): Použití oficiálního obrazu
+    image: minio/minio:latest
+    container_name: datalake_minio
+
+    # 2. Komunikační kanály (Porty): API a Vizuální konzole
+    ports:
+      - "9000:9000" # API kanál (S3 protokol pro Python)
+      - "9001:9001" # Webové rozhraní (Konzole pro tebe)
+
+    # 3. Identita a bezpečnost (Proměnné prostředí)
+    environment:
+      - MINIO_ROOT_USER=admin_datalake
+      - MINIO_ROOT_PASSWORD=SecurePassword123!
+
+    # 4. Povel k životu (Spouštěcí příkaz)
+    command: server /data --console-address ":9001"
+
+    # 5. Ukotvení hmoty (Trvalá úložiště)
+    volumes:
+      - ./data_lake:/data
